@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Interview
+from .forms import InterviewForm
 
 # Create your views here.
 def home(request):
@@ -29,3 +30,17 @@ def logoutuser(request):
 def get_interviews(request):
     interviews = Interview.objects.all()
     return render(request , 'interviews/listings.html', { 'interviews':interviews } )
+
+
+@login_required
+def create_interview(request):
+    if request.method == 'GET':
+        return render(request, 'interviews/createInterview.html', {'form':InterviewForm})
+    else:
+        try:
+            form = InterviewForm(request.POST)
+            newInterview = form.save(commit=False)
+            newInterview.save()
+            return redirect('get_interviews')
+        except ValueError:
+            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Bad Data Passed'})
