@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Interview
+from .models import Interview, InterviewParticipants
 from .forms import InterviewForm
 
 # Create your views here.
@@ -41,6 +41,8 @@ def create_interview(request):
             form = InterviewForm(request.POST)
             newInterview = form.save(commit=False)
             newInterview.save()
+            newInterviewParticipants = InterviewParticipants(interview = newInterview)
+            newInterviewParticipants.save()
             return redirect('get_interviews')
         except ValueError:
             return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Bad Data Passed'})
