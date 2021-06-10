@@ -14,3 +14,22 @@ class Participant(models.Model):
     position_applied = models.CharField(max_length = 30, blank = True, null = True)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
 
+class Interview(models.Model):
+    title = models.CharField(max_length = 40)
+    date = models.DateField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField(blank=True, null=True) 
+    candidates_count = models.IntegerField(default = 0)
+    result = models.CharField( max_length=3, choices=(
+        ('S', 'Selected'),
+        ('R', 'Rejected'),
+        ('J', 'Joined'),
+        ('DNJ', 'Did Not Join'),
+        ('TBD', 'Pending'),), default='TBD' )
+
+class InterviewParticipants(models.Model):
+    interview = models.ForeignKey('Interview', related_name='interview', on_delete=models.CASCADE)
+    candidate_one = models.ForeignKey('Participant', related_name='pariticipant_one', on_delete=models.CASCADE,  blank=True, null=True)
+    candidate_two = models.ForeignKey('Participant', related_name='pariticipant_two', on_delete=models.CASCADE,  blank=True, null=True)
+
+    
