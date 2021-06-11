@@ -24,6 +24,7 @@ urlpatterns = [
     path('logout/', views.logoutuser, name='logoutuser'),
     path('interviews/', views.get_interviews, name='get_interviews'),
     path('create_interview/', views.create_interview, name = 'create_interview'),
+    path('create_participant/', views.create_participant, name = 'create_participant'),
     path('delete_interview/<str:interview_name>', views.delete_interview, name='delete_interview'),
     path('edit_interview/<str:interview_name>', views.edit_interview, name='edit_interview'),
 ]

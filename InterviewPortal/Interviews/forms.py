@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Interview
+from .models import Interview, Participant
 from django import forms
 
 class DateInput(forms.DateInput):
@@ -18,3 +18,7 @@ class InterviewForm(ModelForm):
             'end_time' : DateTimeInput()
         }
 
+class ParticipantForm(ModelForm):
+    class Meta:
+        model = Participant
+        fields = ['name', 'phone_number', 'college', 'gender', 'position_applied']

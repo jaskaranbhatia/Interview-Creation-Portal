@@ -5,7 +5,7 @@ from phone_field import PhoneField
 # Create your models here.
 class Participant(models.Model):
     name = models.CharField(max_length = 40)
-    phone_number = PhoneField(blank=True, help_text='Contact phone number')
+    phone_number = models.CharField(max_length = 40)
     college = models.CharField(max_length = 100, blank=True, null=True)
     gender = models.CharField(max_length=1, choices=(
         ('M', 'Male'),
