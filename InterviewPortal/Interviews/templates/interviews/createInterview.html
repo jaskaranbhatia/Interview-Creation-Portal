@@ -18,14 +18,14 @@
             {{ form.as_p }}
             <label>Partipant One: </label>
             <select name = "participant_one">
-            <option value="None">TBD</option>
+            <option value="None">None</option>
             {% for participant in participants %} 
                 <option value="{{participant.name}}">{{ participant.name }}</option>
             {% endfor %}   
             </select><br>
             <label>Partipant Two: </label>
             <select name = "participant_two">
-            <option value="None">TBD</option>
+            <option value="None">None</option>
             {% for participant in participants %} 
                 <option value="{{participant.name}}">{{ participant.name }}</option>
             {% endfor %}   
