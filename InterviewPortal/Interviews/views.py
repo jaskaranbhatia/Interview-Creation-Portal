@@ -44,7 +44,7 @@ def create_interview(request):
             paritipant_two = request.POST['participant_two']
             if(paritipant_one != "None" and paritipant_two != "None" and (paritipant_one == paritipant_two)):
                 participants = Participant.objects.all()
-                return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One and Two cannot be same','participants' : participants})
+                return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One and Two cannot be same, Press back button','participants' : participants})
             if(paritipant_one != "None" and paritipant_two != "None"):
                 participant_one_instance = Participant.objects.filter(name__icontains=paritipant_one)[0]
                 participant_two_instance = Participant.objects.filter(name__icontains=paritipant_two)[0]
@@ -56,7 +56,7 @@ def create_interview(request):
                     if(iparticipants.candidate_one == participant_one_instance or iparticipants.candidate_two == participant_one_instance):
                         if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
                             participants = Participant.objects.all()
-                            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot','participants' : participants})
+                            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot, Press back button','participants' : participants})
                 
                 # Condition to check slot overlap for Participant Two
                 for inter in interviews:
@@ -64,7 +64,7 @@ def create_interview(request):
                     if(iparticipants.candidate_one == participant_two_instance or iparticipants.candidate_two == participant_two_instance):
                         if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
                             participants = Participant.objects.all()
-                            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot','participants' : participants})
+                            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot, Press back button','participants' : participants})
                         
 
                 newInterview.save()
@@ -80,7 +80,7 @@ def create_interview(request):
                     if(iparticipants.candidate_one == participant_one_instance or iparticipants.candidate_two == participant_one_instance):
                         if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
                             participants = Participant.objects.all()
-                            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot','participants' : participants})
+                            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot, Press back button','participants' : participants})
                 
                 newInterview.save()
                 newInterviewParticipants = InterviewParticipants(interview = newInterview, candidate_one = participant_one_instance)
@@ -95,7 +95,7 @@ def create_interview(request):
                     if(iparticipants.candidate_one == participant_two_instance or iparticipants.candidate_two == participant_two_instance):
                         if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
                             participants = Participant.objects.all()
-                            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot','participants' : participants})
+                            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot, Press back button','participants' : participants})
                 newInterview.save()
                 newInterviewParticipants = InterviewParticipants(interview = newInterview, candidate_two = participant_two_instance)
                 newInterviewParticipants.save()
@@ -137,81 +137,69 @@ def edit_interview(request, interview_name):
             paritipant_two = request.POST['participant_two']
             if(paritipant_one != "None" and paritipant_two != "None" and (paritipant_one == paritipant_two)):
                 participants = Participant.objects.all()
-                return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One and Two cannot be same','participants' : participants})
+                iparticipants = InterviewParticipants.objects.filter(interview = instance)[0]
+                return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One and Two cannot be same, Press back button','participant': iparticipants, 'participants': participants})
             
             newInterview = form.save()
             form.save()
             iparticipants = InterviewParticipants.objects.filter(interview = instance)[0]
             participant_one_instance = Participant.objects.filter(name__icontains=paritipant_one)
             participant_two_instance = Participant.objects.filter(name__icontains=paritipant_two)
+            
             if len(participant_one_instance) == 0 and len(participant_two_instance) == 0:
                 iparticipants.candidate_one = None
                 iparticipants.candidate_two = None
             elif len(participant_one_instance) == 0 and len(participant_two_instance) != 0:
                 iparticipants.candidate_one = None
+                participant_two_ins = participant_two_instance[0]
                 interviews = Interview.objects.all()
                 for inter in interviews:
-                    iparticipants = InterviewParticipants.objects.filter(interview = inter)[0]
-                    if(iparticipants.candidate_one == participant_two_instance[0] or iparticipants.candidate_two == participant_two_instance[0]):
-                        if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
-                            participants = Participant.objects.all()
-                            form = InterviewForm(initial = {
-                                'title' : instance.title,
-                                'date' : instance.date,
-                                'start_time' : instance.start_time,
-                                'end_time' : instance.end_time
-                            })
-                            return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot', 'participant': iparticipants, 'participants': participants})
-                
+                    if(inter != instance):
+                        iparticipants = InterviewParticipants.objects.filter(interview = inter)[0]
+                        if(iparticipants.candidate_one == participant_two_ins or iparticipants.candidate_two == participant_two_ins):
+                            if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
+                                participants = Participant.objects.all()
+                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot, Press back button','participants' : participants})
+                 
                 iparticipants.candidate_two = participant_two_instance[0]
             elif len(participant_one_instance) != 0 and len(participant_two_instance) == 0:
                 iparticipants.candidate_two = None
+                participant_one_ins = participant_one_instance[0]
                 interviews = Interview.objects.all()
                 for inter in interviews:
-                    iparticipants = InterviewParticipants.objects.filter(interview = inter)[0]
-                    if(iparticipants.candidate_one == participant_one_instance[0] or iparticipants.candidate_two == participant_one_instance[0]):
-                        if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
-                            participants = Participant.objects.all()
-                            form = InterviewForm(initial = {
-                                'title' : instance.title,
-                                'date' : instance.date,
-                                'start_time' : instance.start_time,
-                                'end_time' : instance.end_time
-                            })
-                            return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot', 'participant': iparticipants, 'participants': participants})
+                    if(inter != instance):
+                        iparticipants = InterviewParticipants.objects.filter(interview = inter)[0]
+                        if(iparticipants.candidate_one == participant_one_ins or iparticipants.candidate_two == participant_one_ins):
+                            if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
+                                participants = Participant.objects.all()
+                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot, Press back button','participants' : participants})
+                    
                 iparticipants.candidate_one = participant_one_instance[0]
-                
             else:
                 interviews = Interview.objects.all()
+                participant_one_ins = participant_one_instance[0]
+                participant_two_ins = participant_two_instance[0]
+
                 for inter in interviews:
-                    iparticipants = InterviewParticipants.objects.filter(interview = inter)[0]
-                    if(iparticipants.candidate_one == participant_one_instance[0] or iparticipants.candidate_two == participant_one_instance[0]):
-                        if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
-                            participants = Participant.objects.all()
-                            form = InterviewForm(initial = {
-                                'title' : instance.title,
-                                'date' : instance.date,
-                                'start_time' : instance.start_time,
-                                'end_time' : instance.end_time
-                            })
-                            return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot', 'participant': iparticipants, 'participants': participants})
+                    if(inter != instance):
+                        iparticipants = InterviewParticipants.objects.filter(interview = inter)[0]
+                        if(iparticipants.candidate_one == participant_one_ins or iparticipants.candidate_two == participant_one_ins):
+                            if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
+                                participants = Participant.objects.all()
+                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot, Press back button','participants' : participants})
                 
-            
+                
                 for inter in interviews:
-                    iparticipants = InterviewParticipants.objects.filter(interview = inter)[0]
-                    if(iparticipants.candidate_one == participant_two_instance[0] or iparticipants.candidate_two == participant_two_instance[0]):
-                        if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
-                            participants = Participant.objects.all()
-                            form = InterviewForm(initial = {
-                                'title' : instance.title,
-                                'date' : instance.date,
-                                'start_time' : instance.start_time,
-                                'end_time' : instance.end_time
-                            })
-                            return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot', 'participant': iparticipants, 'participants': participants})
-                
+                    if(inter != instance):
+                        iparticipants = InterviewParticipants.objects.filter(interview = inter)[0]
+                        if(iparticipants.candidate_one == participant_two_ins or iparticipants.candidate_two == participant_two_ins):
+                            if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
+                                participants = Participant.objects.all()
+                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot, Press back button','participants' : participants})
+                 
                 iparticipants.candidate_one = participant_one_instance[0]
                 iparticipants.candidate_two = participant_two_instance[0]
+            
             iparticipants.save()
             
             return redirect('get_interviews')
