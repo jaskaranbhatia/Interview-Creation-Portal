@@ -239,4 +239,10 @@ def upload_resume(request, pname):
         participant.save()
         return render(request , 'interviews/listings_par.html', { 'participants': participants } )
     return render(request , 'interviews/listings_par.html', { 'participants': participants } )
+
+@login_required
+def interview_detail(request, iname):
+    interview = Interview.objects.filter(title = iname)[0]
+    iparticipants = InterviewParticipants.objects.filter(interview = interview)[0]
+    return render(request, 'interviews/interview_detail.html', {'interview': interview, 'participants': iparticipants})
     

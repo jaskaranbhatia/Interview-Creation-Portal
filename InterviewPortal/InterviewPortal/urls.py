@@ -31,4 +31,5 @@ urlpatterns = [
     path('delete_interview/<str:interview_name>', views.delete_interview, name='delete_interview'),
     path('edit_interview/<str:interview_name>', views.edit_interview, name='edit_interview'),
     path('upload_resume/<str:pname>', views.upload_resume, name ='upload_resume'),
+    path('interview_detail/<str:iname>', views.interview_detail, name = 'interview_detail')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

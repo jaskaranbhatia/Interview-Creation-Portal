@@ -1,0 +1,39 @@
+{% extends "interviews/base.html" %}
+
+{% block content %}
+<br>
+<br>
+<div class="jumbotron">
+    <h1 class="display-5">Interview for {{interview.title}}</h1>
+    <p class="lead"><b>Schedule</b>: From {{interview.start_time}} To {{interview.end_time}}</p>
+    <hr class="my-4">
+    <h5>Participants</h5>
+    <hr>
+    <div class="container-fluid p-0">
+        <div class="row">
+          <div class="col-sm">
+            {% if participants.candidate_one %}
+                <h6>Participant One</h6>
+                <h6><b>Name:</b> {{participants.candidate_one.name}} </h6>
+                <h6><b>Phone Number:</b> {{participants.candidate_one.phone_number}} </h6>
+                <h6><b>College:</b> {{participants.candidate_one.college}} </h6>
+                <h6><b>Gender:</b> {{participants.candidate_one.gender}} </h6>
+            {% endif %}
+          </div>
+          <div class="col-sm">
+            {% if participants.candidate_two %}
+                <h6>Participant Two</h6>
+                <h6><b>Name:</b> {{participants.candidate_two.name}} </h6>
+                <h6><b>Phone Number:</b> {{participants.candidate_two.phone_number}} </h6>
+                <h6><b>College:</b> {{participants.candidate_two.college}} </h6>
+                <h6><b>Gender:</b> {{participants.candidate_two.gender}} </h6>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    <br><br>
+    <p class="lead">
+      <a class="btn btn-primary" href="{% url 'get_interviews' %}" role="button">Back</a>
+    </p>
+  </div>
+{% endblock %}

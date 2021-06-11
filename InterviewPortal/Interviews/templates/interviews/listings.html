@@ -28,7 +28,7 @@
     <tbody>
  {% for interview in interviews %}
         <tr>
-            <th scope="row">{{interview.title}}</th>
+            <th scope="row"><a href="{% url 'interview_detail' interview.title %}">{{interview.title}}</a></th>
             <td>{{interview.date}}</td>
             <td>{{interview.start_time}}</td>
             <td>{{interview.end_time}}</td>
