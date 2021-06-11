@@ -12,6 +12,7 @@
     <div class="container-fluid p-0">
         <div class="row">
           <div class="col-sm">
+          {% if participants.candidate_one or participants.candidate_two%}
             {% if participants.candidate_one %}
                 <h6>Participant One</h6>
                 <h6><b>Name:</b> {{participants.candidate_one.name}} </h6>
@@ -28,6 +29,9 @@
                 <h6><b>College:</b> {{participants.candidate_two.college}} </h6>
                 <h6><b>Gender:</b> {{participants.candidate_two.gender}} </h6>
             {% endif %}
+          {% else %}
+            <h6>No Participants Added</h6>
+          {% endif %}
           </div>
         </div>
       </div>

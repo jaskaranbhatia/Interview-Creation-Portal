@@ -1,6 +1,7 @@
 {% extends "interviews/base.html" %}
 {% block content %}
-<div class="row mt-5">
+{% load crispy_forms_tags %}
+<div class="row mt-3">
     <div class="col-md-5">
         <h2>New Interview</h2>
     </div>
@@ -15,16 +16,16 @@
         {% endif %}
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form|crispy }}
             <label>Partipant One: </label>
-            <select name = "participant_one">
+            <select class="form-control" name = "participant_one">
             <option value="None">None</option>
             {% for participant in participants %} 
                 <option value="{{participant.name}}">{{ participant.name }}</option>
             {% endfor %}   
             </select><br>
             <label>Partipant Two: </label>
-            <select name = "participant_two">
+            <select class="form-control" name = "participant_two">
             <option value="None">None</option>
             {% for participant in participants %} 
                 <option value="{{participant.name}}">{{ participant.name }}</option>
