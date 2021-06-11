@@ -131,7 +131,8 @@ def edit_interview(request, interview_name):
         return render(request , 'interviews/edit_interview.html', { 'form':form, 'participant': iparticipants, 'participants': participants} )
     else:
         try:
-            form = InterviewForm(request.POST)
+            instance = Interview.objects.get(title = interview_name)
+            form = InterviewForm(request.POST, instance = instance)
             paritipant_one = request.POST['participant_one']
             paritipant_two = request.POST['participant_two']
             if(paritipant_one != "None" and paritipant_two != "None" and (paritipant_one == paritipant_two)):
@@ -158,8 +159,7 @@ def edit_interview(request, interview_name):
                             participants = Participant.objects.all()
                             return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot','participants' : participants})
                         
-
-                newInterview.save()
+                form.save(commit=False)
                 newInterviewParticipants = InterviewParticipants(interview = newInterview, candidate_one = participant_one_instance, candidate_two = participant_two_instance)
                 newInterviewParticipants.save()
             elif(paritipant_one != "None" and paritipant_two == "None"):
@@ -173,8 +173,7 @@ def edit_interview(request, interview_name):
                         if newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time:
                             participants = Participant.objects.all()
                             return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot','participants' : participants})
-                
-                newInterview.save()
+                form.save(commit=False)
                 newInterviewParticipants = InterviewParticipants(interview = newInterview, candidate_one = participant_one_instance)
                 newInterviewParticipants.save()
             elif(paritipant_one == "None" and paritipant_two != "None"):
@@ -188,12 +187,12 @@ def edit_interview(request, interview_name):
                         if newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time:
                             participants = Participant.objects.all()
                             return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot','participants' : participants})
-                newInterview.save()
+                form.save(commit=False)
                 newInterviewParticipants = InterviewParticipants(interview = newInterview, candidate_two = participant_two_instance)
                 newInterviewParticipants.save()
             else:
-                newInterview = form.save(commit=False)
-                newInterview.save()
+                newInterview = form.save()
+                form.save()
                 newInterviewParticipants = InterviewParticipants(interview = newInterview)
                 newInterviewParticipants.save()
             return redirect('get_interviews')
