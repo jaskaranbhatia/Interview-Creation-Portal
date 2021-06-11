@@ -19,6 +19,8 @@
         <th scope="col">Date</th>
         <th scope="col">Start Time</th>
         <th scope="col">End Time</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -28,6 +30,8 @@
             <td>{{interview.date}}</td>
             <td>{{interview.start_time}}</td>
             <td>{{interview.end_time}}</td>
+            <td><a href = "{% url 'edit_interview' interview.title %}"><button type="button" class="btn btn-success">Edit Details</button></a></td>
+            <td><a href = "{% url 'delete_interview' interview.title %}"><button type="button" class="btn btn-danger">Delete</button></a></td>
         </tr>
 {% endfor %}
     </tbody>

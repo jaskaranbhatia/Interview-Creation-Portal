@@ -17,3 +17,4 @@ class InterviewForm(ModelForm):
             'start_time' : DateTimeInput(),
             'end_time' : DateTimeInput()
         }
+
