@@ -129,7 +129,7 @@ def edit_interview(request, interview_name):
             'start_time' : instance.start_time,
             'end_time' : instance.end_time
         })
-        return render(request , 'interviews/edit_interview.html', { 'form':form, 'participant': iparticipants, 'participants': participants} )
+        return render(request , 'interviews/edit_interview.html', { 'form':form, 'participant': iparticipants, 'participants': participants, 'interview': instance} )
     else:
         try:
             instance = Interview.objects.get(title = interview_name)
@@ -139,7 +139,7 @@ def edit_interview(request, interview_name):
             if(paritipant_one != "None" and paritipant_two != "None" and (paritipant_one == paritipant_two)):
                 participants = Participant.objects.all()
                 iparticipants = InterviewParticipants.objects.filter(interview = instance)[0]
-                return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One and Two cannot be same, Press back button','participant': iparticipants, 'participants': participants})
+                return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One and Two cannot be same, Press back button','participant': iparticipants, 'participants': participants, 'interview': instance})
             
             newInterview = form.save()
             form.save()
@@ -160,7 +160,7 @@ def edit_interview(request, interview_name):
                         if(iparticipants.candidate_one == participant_two_ins or iparticipants.candidate_two == participant_two_ins):
                             if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
                                 participants = Participant.objects.all()
-                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot, Press back button','participants' : participants})
+                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot, Press back button','participants' : participants, 'interview': instance})
                  
                 iparticipants.candidate_two = participant_two_instance[0]
             elif len(participant_one_instance) != 0 and len(participant_two_instance) == 0:
@@ -173,7 +173,7 @@ def edit_interview(request, interview_name):
                         if(iparticipants.candidate_one == participant_one_ins or iparticipants.candidate_two == participant_one_ins):
                             if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
                                 participants = Participant.objects.all()
-                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot, Press back button','participants' : participants})
+                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot, Press back button','participants' : participants, 'interview': instance})
                     
                 iparticipants.candidate_one = participant_one_instance[0]
             else:
@@ -187,7 +187,7 @@ def edit_interview(request, interview_name):
                         if(iparticipants.candidate_one == participant_one_ins or iparticipants.candidate_two == participant_one_ins):
                             if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
                                 participants = Participant.objects.all()
-                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot, Press back button','participants' : participants})
+                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant One already has interview in this time slot, Press back button','participants' : participants, 'interview': instance})
                 
                 
                 for inter in interviews:
@@ -196,7 +196,7 @@ def edit_interview(request, interview_name):
                         if(iparticipants.candidate_one == participant_two_ins or iparticipants.candidate_two == participant_two_ins):
                             if (newInterview.start_time >= inter.start_time and newInterview.start_time <= inter.end_time) or (newInterview.end_time >= inter.start_time and newInterview.end_time <= inter.end_time):
                                 participants = Participant.objects.all()
-                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot, Press back button','participants' : participants})
+                                return render(request, 'interviews/edit_interview.html', {'form':InterviewForm(), 'error':'Participant Two already has interview in this time slot, Press back button','participants' : participants, 'interview': instance})
                  
                 iparticipants.candidate_one = participant_one_instance[0]
                 iparticipants.candidate_two = participant_two_instance[0]
@@ -206,7 +206,7 @@ def edit_interview(request, interview_name):
             return redirect('get_interviews')
         except ValueError:
             participants = Participant.objects.all()
-            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Bad Data Passed','participants' : participants})
+            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Bad Data Passed','participants' : participants, 'interview': instance})
 
 @login_required
 def create_participant(request):
