@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Interview, InterviewParticipants, Participant
 from .forms import InterviewForm, ParticipantForm
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 def home(request):
@@ -28,7 +29,7 @@ def logoutuser(request):
 
 @login_required
 def get_interviews(request):
-    interviews = Interview.objects.all()
+    interviews = Interview.objects.all().order_by('date')
     return render(request , 'interviews/listings.html', { 'interviews':interviews } )
 
 
@@ -220,3 +221,22 @@ def create_participant(request):
         except ValueError:
             participants = Participant.objects.all()
             return render(request, 'interviews/createParticipant.html', {'form':ParticipantForm(), 'error':'Bad Data Passed'})
+
+@login_required
+def list_participants(request):
+    participants = Participant.objects.all()
+    return render(request , 'interviews/listings_par.html', { 'participants': participants } )
+
+@login_required
+def upload_resume(request, pname):
+    participants = Participant.objects.all()
+    if request.method == "POST":
+        file = request.FILES['resumefile']
+        fs = FileSystemStorage()
+        fs.save(file.name, file)
+        participant = Participant.objects.filter(name__icontains=pname)[0]
+        participant.resume = file
+        participant.save()
+        return render(request , 'interviews/listings_par.html', { 'participants': participants } )
+    return render(request , 'interviews/listings_par.html', { 'participants': participants } )
+    

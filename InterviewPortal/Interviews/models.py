@@ -12,6 +12,7 @@ class Participant(models.Model):
         ('F', 'Female'),
     ))
     position_applied = models.CharField(max_length = 30, blank = True, null = True)
+    resume = models.FileField(null=True)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
 
 class Interview(models.Model):

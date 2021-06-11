@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Interviews import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,8 +25,10 @@ urlpatterns = [
     path('login/', views.loginuser, name='loginuser'),
     path('logout/', views.logoutuser, name='logoutuser'),
     path('interviews/', views.get_interviews, name='get_interviews'),
+    path('participants/', views.list_participants, name='listings_par'),
     path('create_interview/', views.create_interview, name = 'create_interview'),
     path('create_participant/', views.create_participant, name = 'create_participant'),
     path('delete_interview/<str:interview_name>', views.delete_interview, name='delete_interview'),
     path('edit_interview/<str:interview_name>', views.edit_interview, name='edit_interview'),
-]
+    path('upload_resume/<str:pname>', views.upload_resume, name ='upload_resume'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
