@@ -1,11 +1,12 @@
 {% extends "interviews/base.html" %}
 {% block content %}
-<div class="row justify-content-center mt-5">
+<div class="row mt-5">
     <div class="col-md-5">
         <h2>New Interview</h2>
     </div>
 </div>
-<div class="row justify-content-center mt-5">
+<hr>
+<div class="row">
     <div class="col-md-5">
         {% if error %}
             <div class="alert alert-danger" role="alert">
@@ -15,6 +16,20 @@
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
+            <label>Partipant One: </label>
+            <select name = "participant_one">
+            <option value="None">TBD</option>
+            {% for participant in participants %} 
+                <option value="{{participant.name}}">{{ participant.name }}</option>
+            {% endfor %}   
+            </select><br>
+            <label>Partipant Two: </label>
+            <select name = "participant_two">
+            <option value="None">TBD</option>
+            {% for participant in participants %} 
+                <option value="{{participant.name}}">{{ participant.name }}</option>
+            {% endfor %}   
+            </select><br>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>

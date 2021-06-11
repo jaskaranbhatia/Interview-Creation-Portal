@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Interview, InterviewParticipants
+from .models import Interview, InterviewParticipants, Participant
 from .forms import InterviewForm
 
 # Create your views here.
@@ -35,14 +35,35 @@ def get_interviews(request):
 @login_required
 def create_interview(request):
     if request.method == 'GET':
-        return render(request, 'interviews/createInterview.html', {'form':InterviewForm})
+        participants = Participant.objects.all()
+        return render(request, 'interviews/createInterview.html', {'form':InterviewForm, 'participants' : participants})
     else:
         try:
             form = InterviewForm(request.POST)
             newInterview = form.save(commit=False)
             newInterview.save()
-            newInterviewParticipants = InterviewParticipants(interview = newInterview)
-            newInterviewParticipants.save()
+            paritipant_one = request.POST['participant_one']
+            paritipant_two = request.POST['participant_two']
+            if(paritipant_one != "None" and participant_two != "None" and (paritipant_one == paritipant_two)):
+                participants = Participant.objects.all()
+                return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Participant One and Two cannot be same','participants' : participants})
+            if(paritipant_one != "None" and paritipant_two != "None"):
+                participant_one_instance = Participant.objects.filter(name__icontains=paritipant_one)[0]
+                participant_two_instance = Participant.objects.filter(name__icontains=paritipant_two)[0]
+                newInterviewParticipants = InterviewParticipants(interview = newInterview, candidate_one = participant_one_instance, candidate_two = participant_two_instance)
+                newInterviewParticipants.save()
+            elif(paritipant_one != "None" and paritipant_two == "None"):
+                participant_one_instance = Participant.objects.filter(name__icontains=paritipant_one)[0]
+                newInterviewParticipants = InterviewParticipants(interview = newInterview, candidate_one = participant_one_instance)
+                newInterviewParticipants.save()
+            elif(paritipant_one == "None" and paritipant_two != "None"):
+                participant_two_instance = Participant.objects.filter(name__icontains=paritipant_two)[0]
+                newInterviewParticipants = InterviewParticipants(interview = newInterview, candidate_two = participant_two_instance)
+                newInterviewParticipants.save()
+            else:
+                newInterviewParticipants = InterviewParticipants(interview = newInterview)
+                newInterviewParticipants.save()
             return redirect('get_interviews')
         except ValueError:
-            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Bad Data Passed'})
+            participants = Participant.objects.all()
+            return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Bad Data Passed','participants' : participants})
