@@ -31,7 +31,7 @@ class Interview(models.Model):
 
 class InterviewParticipants(models.Model):
     interview = models.ForeignKey('Interview', related_name='interview', on_delete=models.CASCADE)
-    candidate_one = models.ForeignKey('Participant', related_name='pariticipant_one', on_delete=models.CASCADE,  blank=True, null=True)
-    candidate_two = models.ForeignKey('Participant', related_name='pariticipant_two', on_delete=models.CASCADE,  blank=True, null=True)
+    candidate_one = models.ForeignKey('Participant', related_name='pariticipant_one', on_delete = models.SET_NULL, blank=True, null=True)
+    candidate_two = models.ForeignKey('Participant', related_name='pariticipant_two', on_delete = models.SET_NULL, blank=True, null=True)
 
     
