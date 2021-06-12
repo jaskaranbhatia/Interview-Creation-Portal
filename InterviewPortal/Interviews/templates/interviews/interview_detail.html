@@ -37,7 +37,9 @@
       </div>
     <br><br>
     <p class="lead">
-      <a class="btn btn-primary" href="{% url 'get_interviews' %}" role="button">Back</a>
+      <a class="btn btn-success btn-sm" href="{% url 'edit_interview' interview.id %}" role="button">Edit Details</a>
+      <a class="btn btn-danger btn-sm" href="{% url 'delete_interview' interview.id %}" role="button">Delete</a>
+      <a class="btn btn-primary btn-sm" href="{% url 'get_interviews' %}" role="button">Back</a>
     </p>
   </div>
 {% endblock %}

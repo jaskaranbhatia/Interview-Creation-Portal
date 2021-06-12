@@ -4,7 +4,11 @@
 <div class="row mt-5">
     <div class="col-md-5">
         <h2>New Interview</h2>
-        <a href = "{% url 'get_interviews' %}"><button type="button" class="btn btn-success btn-info btn-sm">Back</button></a>
+        {% if error %}
+            <a href = "##" onClick = "history.go(-1); return false;"><button type="button" class="btn btn-success btn-info btn-sm">Back</button></a>
+        {% else %}
+            <a href = "{% url 'get_interviews' %}"><button type="button" class="btn btn-success btn-info btn-sm">Back</button></a>
+        {% endif %}
     </div>
 </div>
 <hr>
