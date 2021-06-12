@@ -28,12 +28,12 @@
     <tbody>
  {% for interview in interviews %}
         <tr>
-            <th scope="row"><a href="{% url 'interview_detail' interview.title %}">{{interview.title}}</a></th>
+            <th scope="row"><a href="{% url 'interview_detail' interview.id %}">{{interview.title}}</a></th>
             <td>{{interview.date}}</td>
             <td>{{interview.start_time}}</td>
             <td>{{interview.end_time}}</td>
-            <td><a href = "{% url 'edit_interview' interview.title %}"><button type="button" class="btn btn-success">Edit Details</button></a></td>
-            <td><a href = "{% url 'delete_interview' interview.title %}"><button type="button" class="btn btn-danger">Delete</button></a></td>
+            <td><a href = "{% url 'edit_interview' interview.id %}"><button type="button" class="btn btn-success">Edit Details</button></a></td>
+            <td><a href = "{% url 'delete_interview' interview.id %}"><button type="button" class="btn btn-danger">Delete</button></a></td>
         </tr>
 {% endfor %}
     </tbody>

@@ -111,16 +111,16 @@ def create_interview(request):
             return render(request, 'interviews/createInterview.html', {'form':InterviewForm(), 'error':'Bad Data Passed','participants' : participants})
 
 @login_required
-def delete_interview(request, interview_name):
-    instance = Interview.objects.get(title = interview_name)
+def delete_interview(request, interview_id):
+    instance = Interview.objects.get(id = interview_id)
     instance.delete()
     interviews = Interview.objects.all()
     return render(request , 'interviews/listings.html', { 'interviews':interviews } )
 
 @login_required
-def edit_interview(request, interview_name):
+def edit_interview(request, interview_id):
     if request.method == 'GET':
-        instance = Interview.objects.get(title = interview_name)
+        instance = Interview.objects.get(id = interview_id)
         iparticipants = InterviewParticipants.objects.filter(interview = instance)[0]
         participants = Participant.objects.all()
         form = InterviewForm(initial = {
@@ -132,7 +132,7 @@ def edit_interview(request, interview_name):
         return render(request , 'interviews/edit_interview.html', { 'form':form, 'participant': iparticipants, 'participants': participants, 'interview': instance} )
     else:
         try:
-            instance = Interview.objects.get(title = interview_name)
+            instance = Interview.objects.get(id = interview_id)
             form = InterviewForm(request.POST, instance = instance)
             paritipant_one = request.POST['participant_one']
             paritipant_two = request.POST['participant_two']
@@ -241,8 +241,15 @@ def upload_resume(request, pname):
     return render(request , 'interviews/listings_par.html', { 'participants': participants } )
 
 @login_required
-def interview_detail(request, iname):
-    interview = Interview.objects.filter(title = iname)[0]
+def interview_detail(request, i_id):
+    interview = Interview.objects.filter(id = i_id)[0]
     iparticipants = InterviewParticipants.objects.filter(interview = interview)[0]
     return render(request, 'interviews/interview_detail.html', {'interview': interview, 'participants': iparticipants})
+
+@login_required
+def delete_participant(request, p_id):
+    instance = Participant.objects.get(id = p_id)
+    instance.delete()
+    participants = Participant.objects.all()
+    return render(request , 'interviews/listings_par.html', { 'participants': participants } )
     
