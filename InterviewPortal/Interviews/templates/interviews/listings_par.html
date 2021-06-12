@@ -47,6 +47,7 @@
                     </form>
                 {% endif %}
             </td>
+            <td><a href = "{% url 'edit_participant' participant.id %}"><button type="button" class="btn btn-success btn-sm">Edit</button></a></td>
             <td><a href = "{% url 'delete_participant' participant.id %}"><button type="button" class="btn btn-danger btn-sm">Remove</button></a></td>
         </tr>
 {% endfor %}

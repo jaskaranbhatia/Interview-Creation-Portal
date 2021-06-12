@@ -273,5 +273,28 @@ def send_email(request, p_id, i_id):
     iparticipants = InterviewParticipants.objects.filter(interview = interview)[0]
     return render(request, 'interviews/interview_detail.html', {'interview': interview, 'participants': iparticipants})
 
+@login_required
+def edit_participant(request, p_id):
+    if request.method == 'GET':
+        instance = Participant.objects.get(id = p_id)
+        participants = Participant.objects.all()
+        form = ParticipantForm(initial = {
+            'name' : instance.name,
+            'phone_number' : instance.phone_number,
+            'college' : instance.college,
+            'email' : instance.email,
+            'gender' : instance.gender,
+            'position_applied' : instance.position_applied
+        })
+        return render(request, 'interviews/editParticipant.html', {'form': form})
+    else:
+        instance = Participant.objects.get(id = p_id)
+        form = ParticipantForm(request.POST, instance = instance)
+        newInterview = form.save()
+        form.save()
+        participants = Participant.objects.all()
+        return render(request , 'interviews/listings_par.html', { 'participants': participants } )
+
+
 
 

@@ -34,5 +34,6 @@ urlpatterns = [
     path('interview_detail/<int:i_id>', views.interview_detail, name = 'interview_detail'),
     path('delete_participant/<int:p_id>', views.delete_participant, name = 'delete_participant'),
     path('list_resume', views.list_resume, name = 'list_resume'),
-    path('send_email/<int:p_id>/<int:i_id>', views.send_email, name = 'send_email')
+    path('send_email/<int:p_id>/<int:i_id>', views.send_email, name = 'send_email'),
+    path('edit_participant/<int:p_id>', views.edit_participant, name = 'edit_participant')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
