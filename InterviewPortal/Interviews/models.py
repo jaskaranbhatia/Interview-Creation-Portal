@@ -11,6 +11,7 @@ class Participant(models.Model):
         ('M', 'Male'),
         ('F', 'Female'),
     ))
+    email = models.CharField(max_length=40, null = True)
     position_applied = models.CharField(max_length = 30, blank = True, null = True)
     resume = models.FileField(null=True)
     created_at = models.DateTimeField(default=timezone.now, editable=False)

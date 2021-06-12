@@ -21,7 +21,7 @@ class InterviewForm(ModelForm):
 class ParticipantForm(ModelForm):
     class Meta:
         model = Participant
-        fields = ['name', 'phone_number', 'college', 'gender', 'position_applied']
+        fields = ['name', 'phone_number', 'college', 'email', 'gender', 'position_applied']
         widgets = {
             'phone_number' : forms.NumberInput()
         }

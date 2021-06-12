@@ -5,6 +5,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Interview, InterviewParticipants, Participant
 from .forms import InterviewForm, ParticipantForm
 from django.core.files.storage import FileSystemStorage
+from InterviewPortal.settings import EMAIL_HOST_USER
+from . import forms
+from django.core.mail import send_mail
+
 
 # Create your views here.
 def home(request):
@@ -257,3 +261,17 @@ def delete_participant(request, p_id):
 def list_resume(request):
     participants = Participant.objects.all()
     return render(request , 'interviews/list_resume.html', { 'participants': participants } )
+
+@login_required
+def send_email(request, p_id, i_id):
+    instance = Participant.objects.get(id = p_id)
+    interview = Interview.objects.filter(id = i_id)[0]
+    recepient = str(instance.email)
+    subject = str('Interview For ' + interview.title)
+    message = str('You have an Interview Scheduled from ' + str(interview.start_time) + ' to ' + str(interview.end_time))
+    send_mail(subject, message, EMAIL_HOST_USER, [recepient], fail_silently=False)
+    iparticipants = InterviewParticipants.objects.filter(interview = interview)[0]
+    return render(request, 'interviews/interview_detail.html', {'interview': interview, 'participants': iparticipants})
+
+
+

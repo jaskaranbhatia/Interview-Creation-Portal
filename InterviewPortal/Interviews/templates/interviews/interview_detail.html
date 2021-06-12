@@ -19,6 +19,10 @@
                 <h6><b>Phone Number:</b> {{participants.candidate_one.phone_number}} </h6>
                 <h6><b>College:</b> {{participants.candidate_one.college}} </h6>
                 <h6><b>Gender:</b> {{participants.candidate_one.gender}} </h6>
+                {% if participants.candidate_one.email %}
+                  <br>
+                  <center><a class="btn btn-dark btn-sm" href="{% url 'send_email' participants.candidate_one.id  interview.id %}" role="button">Send Email To {{participants.candidate_one.name}}</a></center>
+                {% endif %}
             {% endif %}
           </div>
           <div class="col-sm">
@@ -28,6 +32,10 @@
                 <h6><b>Phone Number:</b> {{participants.candidate_two.phone_number}} </h6>
                 <h6><b>College:</b> {{participants.candidate_two.college}} </h6>
                 <h6><b>Gender:</b> {{participants.candidate_two.gender}} </h6>
+                {% if participants.candidate_two.email %}
+                  <br>
+                  <center><a class="btn btn-dark btn-sm" href="{% url 'send_email' participants.candidate_two.id  interview.id %}" role="button">Send Email To {{participants.candidate_two.name}}</a></center>
+                {% endif %}
             {% endif %}
           {% else %}
             <h6>No Participants Added</h6>
