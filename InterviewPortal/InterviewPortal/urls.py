@@ -32,5 +32,6 @@ urlpatterns = [
     path('edit_interview/<int:interview_id>', views.edit_interview, name='edit_interview'),
     path('upload_resume/<str:pname>', views.upload_resume, name ='upload_resume'),
     path('interview_detail/<int:i_id>', views.interview_detail, name = 'interview_detail'),
-    path('delete_participant/<int:p_id>', views.delete_participant, name = 'delete_participant')
+    path('delete_participant/<int:p_id>', views.delete_participant, name = 'delete_participant'),
+    path('list_resume', views.list_resume, name = 'list_resume')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

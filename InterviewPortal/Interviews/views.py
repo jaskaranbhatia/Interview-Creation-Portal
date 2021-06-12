@@ -253,3 +253,7 @@ def delete_participant(request, p_id):
     participants = Participant.objects.all()
     return render(request , 'interviews/listings_par.html', { 'participants': participants } )
     
+@login_required
+def list_resume(request):
+    participants = Participant.objects.all()
+    return render(request , 'interviews/list_resume.html', { 'participants': participants } )

@@ -5,6 +5,13 @@
         <h2>List of Participants</h2>
     </div>
 </div>
+<div class="row mt-2">
+    <div class="col-md-5">
+        <a href = "{% url 'create_participant'%}"><button type="button" class="btn btn-dark">Add Participant</button></a>
+        <a href = "{% url 'list_resume' %}"><button type="button" class="btn btn-info">Show Uploaded Resume's</button></a>
+        <a href = "{% url 'get_interviews'%}"><button type="button" class="btn btn-primary">Back</button></a>
+    </div>
+</div>
 <hr>
 {% if participants %}
 <table class="table">
